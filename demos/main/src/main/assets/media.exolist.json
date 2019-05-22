@@ -405,7 +405,7 @@
       },
       {
         "name": "Google Play (MP3 Audio)",
-        "uri": "https://storage.googleapis.com/exoplayer-test-media-0/play.mp3"
+        "uri": "https://firebasestorage.googleapis.com/v0/b/coinverse-media-staging.appspot.com/o/content%2Ffeeds%2Fen%2Faudio%2Fer-1142868678.mp3?alt=media"
       },
       {
         "name": "Google Play (Ogg/Vorbis Audio)",
