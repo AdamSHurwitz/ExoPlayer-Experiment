@@ -307,24 +307,12 @@ public class PlayerActivity extends AppCompatActivity
     if (player == null) {
       Intent intent = getIntent();
 
-      TrackSelection.Factory trackSelectionFactory;
-      String abrAlgorithm = intent.getStringExtra(ABR_ALGORITHM_EXTRA);
-      if (abrAlgorithm == null || ABR_ALGORITHM_DEFAULT.equals(abrAlgorithm)) {
-        trackSelectionFactory = new AdaptiveTrackSelection.Factory();
-      } else if (ABR_ALGORITHM_RANDOM.equals(abrAlgorithm)) {
-        trackSelectionFactory = new RandomTrackSelection.Factory();
-      } else {
-        showToast(R.string.error_unrecognized_abr_algorithm);
-        finish();
-        return;
-      }
-
       boolean preferExtensionDecoders =
           intent.getBooleanExtra(PREFER_EXTENSION_DECODERS_EXTRA, false);
       RenderersFactory renderersFactory =
           ((DemoApplication) getApplication()).buildRenderersFactory(preferExtensionDecoders);
 
-      trackSelector = new DefaultTrackSelector(trackSelectionFactory);
+      trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
       trackSelector.setParameters(trackSelectorParameters);
       lastSeenTrackGroupArray = null;
       player = ExoPlayerFactory.newSimpleInstance(this, renderersFactory, trackSelector);
