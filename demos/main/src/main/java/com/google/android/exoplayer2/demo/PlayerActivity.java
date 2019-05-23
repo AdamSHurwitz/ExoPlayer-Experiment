@@ -107,7 +107,6 @@ public class PlayerActivity extends AppCompatActivity
 
   private DataSource.Factory dataSourceFactory;
   private SimpleExoPlayer player;
-  private FrameworkMediaDrm mediaDrm;
   private MediaSource mediaSource;
   private DefaultTrackSelector trackSelector;
   private DefaultTrackSelector.Parameters trackSelectorParameters;
@@ -312,14 +311,6 @@ public class PlayerActivity extends AppCompatActivity
       player = null;
       mediaSource = null;
       trackSelector = null;
-    }
-    releaseMediaDrm();
-  }
-
-  private void releaseMediaDrm() {
-    if (mediaDrm != null) {
-      mediaDrm.release();
-      mediaDrm = null;
     }
   }
 
