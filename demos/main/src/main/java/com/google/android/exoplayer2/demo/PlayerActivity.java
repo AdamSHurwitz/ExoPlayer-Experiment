@@ -114,7 +114,6 @@ public class PlayerActivity extends AppCompatActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    String sphericalStereoMode = getIntent().getStringExtra(SPHERICAL_STEREO_MODE_EXTRA);
     super.onCreate(savedInstanceState);
     //dataSourceFactory = buildDataSourceFactory();
 
@@ -127,10 +126,6 @@ public class PlayerActivity extends AppCompatActivity
     playerView.setControllerVisibilityListener(this);
     playerView.setErrorMessageProvider(new PlayerErrorMessageProvider());
     playerView.requestFocus();
-    if (sphericalStereoMode != null) {
-      ((SphericalSurfaceView) playerView.getVideoSurfaceView())
-          .setDefaultStereoMode(C.STEREO_MODE_MONO);
-    }
 
     if (savedInstanceState != null) {
       trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
