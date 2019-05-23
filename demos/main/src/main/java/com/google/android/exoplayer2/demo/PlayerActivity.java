@@ -118,8 +118,6 @@ public class PlayerActivity extends AppCompatActivity
 
   // Fields used only for ad playback. The ads loader is loaded via reflection.
 
-  private AdsLoader adsLoader;
-
   // Activity lifecycle
 
   @Override
@@ -314,9 +312,6 @@ public class PlayerActivity extends AppCompatActivity
       player = null;
       mediaSource = null;
       trackSelector = null;
-    }
-    if (adsLoader != null) {
-      adsLoader.setPlayer(null);
     }
     releaseMediaDrm();
   }
