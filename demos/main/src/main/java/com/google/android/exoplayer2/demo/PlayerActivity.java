@@ -51,6 +51,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.spherical.SphericalSurfaceView;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.ErrorMessageProvider;
 import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.util.Util;
@@ -162,7 +163,6 @@ public class PlayerActivity extends AppCompatActivity
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
     releasePlayer();
-    releaseAdsLoader();
     clearStartPosition();
     setIntent(intent);
   }
@@ -214,7 +214,6 @@ public class PlayerActivity extends AppCompatActivity
   @Override
   public void onDestroy() {
     super.onDestroy();
-    releaseAdsLoader();
   }
 
   @Override
@@ -300,10 +299,17 @@ public class PlayerActivity extends AppCompatActivity
       playerView.setPlaybackPreparer(this);
       debugViewHelper = new DebugTextViewHelper(player, debugTextView);
       debugViewHelper.start();
-      mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+      mediaSource = new ProgressiveMediaSource.Factory(
+          new DefaultDataSourceFactory(
+              this,
+              Util.getUserAgent(this, "")))
           .createMediaSource((Uri.parse(
               "https://firebasestorage.googleapis.com/v0/b/coinverse-media-staging.appspot.com/o/content%2Ffeeds%2Fen%2Faudio%2Fer-1142868678.mp3?alt=media")));
-      releaseAdsLoader();
+      // TODO: Test removing.
+      // Builds DataSourceFactory from application.
+      /*mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+          .createMediaSource((Uri.parse(
+              "https://firebasestorage.googleapis.com/v0/b/coinverse-media-staging.appspot.com/o/content%2Ffeeds%2Fen%2Faudio%2Fer-1142868678.mp3?alt=media")));*/
     }
     boolean haveStartPosition = startWindow != C.INDEX_UNSET;
     if (haveStartPosition) {
@@ -334,14 +340,6 @@ public class PlayerActivity extends AppCompatActivity
     if (mediaDrm != null) {
       mediaDrm.release();
       mediaDrm = null;
-    }
-  }
-
-  private void releaseAdsLoader() {
-    if (adsLoader != null) {
-      adsLoader.release();
-      adsLoader = null;
-      playerView.getOverlayFrameLayout().removeAllViews();
     }
   }
 
