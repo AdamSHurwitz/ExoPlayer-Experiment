@@ -103,7 +103,6 @@ public class PlayerActivity extends AppCompatActivity
   private PlayerView playerView;
   private LinearLayout debugRootView;
   private Button selectTracksButton;
-  private TextView debugTextView;
   private boolean isShowingTrackSelectionDialog;
 
   private DataSource.Factory dataSourceFactory;
@@ -112,7 +111,6 @@ public class PlayerActivity extends AppCompatActivity
   private MediaSource mediaSource;
   private DefaultTrackSelector trackSelector;
   private DefaultTrackSelector.Parameters trackSelectorParameters;
-  private DebugTextViewHelper debugViewHelper;
 
   private boolean startAutoPlay;
   private int startWindow;
@@ -135,7 +133,6 @@ public class PlayerActivity extends AppCompatActivity
 
     setContentView(R.layout.player_activity);
     debugRootView = findViewById(R.id.controls_root);
-    debugTextView = findViewById(R.id.debug_text_view);
     selectTracksButton = findViewById(R.id.select_tracks_button);
     selectTracksButton.setOnClickListener(this);
 
@@ -157,14 +154,6 @@ public class PlayerActivity extends AppCompatActivity
       trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
       clearStartPosition();
     }
-  }
-
-  @Override
-  public void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    releasePlayer();
-    clearStartPosition();
-    setIntent(intent);
   }
 
   @Override
@@ -297,8 +286,6 @@ public class PlayerActivity extends AppCompatActivity
       player.addAnalyticsListener(new EventLogger(trackSelector));
       playerView.setPlayer(player);
       playerView.setPlaybackPreparer(this);
-      debugViewHelper = new DebugTextViewHelper(player, debugTextView);
-      debugViewHelper.start();
       mediaSource = new ProgressiveMediaSource.Factory(
           new DefaultDataSourceFactory(
               this,
@@ -323,8 +310,6 @@ public class PlayerActivity extends AppCompatActivity
     if (player != null) {
       updateTrackSelectorParameters();
       updateStartPosition();
-      debugViewHelper.stop();
-      debugViewHelper = null;
       player.release();
       player = null;
       mediaSource = null;
