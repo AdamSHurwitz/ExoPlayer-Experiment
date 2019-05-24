@@ -61,7 +61,7 @@
     </activity>
 
     <activity android:name="com.google.android.exoplayer2.demo.PlayerActivity"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+        android:configChanges="orientation"
         android:launchMode="singleTop"
         android:label="@string/application_name"
         android:theme="@style/PlayerTheme">
